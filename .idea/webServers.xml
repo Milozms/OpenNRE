@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="147fca52-14ee-4755-96f1-c1c98ede72e2" name="ink" url="http://ink-ron.usc.edu">
+        <fileTransfer host="ink-ron.usc.edu" port="22" rootFolder="/data/maosen" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
