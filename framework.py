@@ -312,8 +312,9 @@ class Framework(object):
 					loss = one_step(self, index, index + [0], weights, self.data_train_label[index], self.data_train_label[index], [self.loss])
 
 				time_str = datetime.datetime.now().isoformat()
-				sys.stdout.write("epoch %d step %d time %s | loss : %f, NA accuracy: %f, not NA accuracy: %f, total accuracy %f" % (epoch, i, time_str, loss[0], self.acc_NA.get(), self.acc_not_NA.get(), self.acc_total.get()) + '\n')
-				sys.stdout.flush()
+				if i % 100 == 0:
+					sys.stdout.write("epoch %d step %d time %s | loss : %f, NA accuracy: %f, not NA accuracy: %f, total accuracy %f" % (epoch, i, time_str, loss[0], self.acc_NA.get(), self.acc_not_NA.get(), self.acc_total.get()) + '\n')
+					sys.stdout.flush()
 
 			if (epoch + 1) % FLAGS.save_epoch == 0:
 				print('epoch ' + str(epoch + 1) + ' has finished')
@@ -326,10 +327,6 @@ class Framework(object):
 	# the real test is 'test_some_epoch'
 		epoch_range = eval(FLAGS.epoch_range)
 		epoch_range = range(epoch_range[0], epoch_range[1])
-		save_x = None
-		save_y = None
-		best_auc = 0
-		best_prec_mean = 0
 		best_epoch = 0
 		best_f1 = 0
 		best_f1_epoch = 0
@@ -350,43 +347,18 @@ class Framework(object):
 				one_step(self, index, [])
 				assert len(self.test_output) == FLAGS.batch_size
 				scores.append(self.test_output)
-			scores = np.stack(scores)
+			scores = np.concatenate(scores, axis=0)
 			preds = np.argmax(scores, axis=1)
 			p_epoch, r_epoch, f1 = compute_f1(preds, self.data_test_label)
 			if f1 > best_f1:
 				precision, recall, best_f1 = p_epoch, r_epoch, f1
 				best_f1_epoch = epoch
-			# sorted_test_result = sorted(test_result, key=lambda x: x[2])
-			# pr_result_x = []
-			# pr_result_y = []
-			# correct = 0
-			# for i, item in enumerate(sorted_test_result[::-1]):
-			# 	if item[1] == 1:
-			# 		correct += 1
-			# 	pr_result_y.append(float(correct) / (i + 1))
-			# 	pr_result_x.append(float(correct) / total_recall)
-
-			# auc = sklearn.metrics.auc(x=pr_result_x, y=pr_result_y)
-			# prec_mean = (pr_result_y[100] + pr_result_y[200] + pr_result_y[300]) / 3
-			# print('auc: {}'.format(auc))
-			# print('p@(100,200,300) mean: {}'.format(prec_mean))
-			# if prec_mean > best_prec_mean:
-			#     best_prec_mean = prec_mean
-			#     best_epoch = epoch
-			#     save_x = pr_result_x
-			#     save_y = pr_result_y
-
-		# if not os.path.exists(FLAGS.test_result_dir):
-		# 	os.mkdir(FLAGS.test_result_dir)
-		# np.save(os.path.join(FLAGS.test_result_dir, FLAGS.model_name + '_' + str(FLAGS.drop_prob) + '_' + str(FLAGS.learning_rate) + '_' + str(FLAGS.batch_size) + '_x.npy'), save_x)
-		# np.save(os.path.join(FLAGS.test_result_dir, FLAGS.model_name + '_' + str(FLAGS.drop_prob) + '_' + str(FLAGS.learning_rate) + '_' + str(FLAGS.batch_size) + '_y.npy'), save_y)
+			print('P/R/F1: %.6f\t%.6f\t%.6f' % (p_epoch, r_epoch, f1))
 		self.save_epoch(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_epoch)
 		# self.save_auc(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_auc)
 		print('best epoch:', best_epoch)
-		# if FLAGS.discard_only_one:
-		# 	print('USING [DISCARD ONLY ONE INSTANCE ENTITY] MODE!')
 		print('best f1 epoch:', best_f1_epoch)
-		print('P, R, F1:', precision, ',', recall, ',', best_f1)
+		print('P, R, F1: %.6f\t%.6f\t%.6f' % (precision, recall, best_f1))
 
 	def save_auc(self, model_name, dropout, lr, bsize, auc):
 		if os.path.isfile('test_result/auc_log.pkl'):

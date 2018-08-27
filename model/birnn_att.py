@@ -29,5 +29,5 @@ def birnn_att(is_training, is_dev=False):
 			framework.test()
 		else:
 			framework.load_test_data()
-			framework.test_some_epoch()
+			framework.test()
 
