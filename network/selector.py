@@ -42,7 +42,7 @@ class Selector(object):
     def no_bag(self, x):
         with tf.name_scope("no_bag"):
             x = self.__dropout__(x)
-        return self.__logits__(x, "attention_logits", False), x
+        return self.__logits__(x, "attention_logits", tf.AUTO_REUSE), x
 
     def attention(self, x, scope, query, dropout_before = False):
         with tf.name_scope("attention"):
@@ -92,7 +92,7 @@ class Selector(object):
 
     def maximum(self, x, scope, query, dropout_before = False):
         with tf.name_scope("maximum"):
-            if self.is_training:    
+            if self.is_training:
                 if dropout_before:
                     x = self.__dropout__(x)
                 tower_repre = []
