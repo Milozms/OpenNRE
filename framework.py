@@ -7,6 +7,7 @@ from network.embedding import Embedding
 from network.encoder import Encoder
 from network.selector import Selector
 from network.classifier import Classifier
+from network.scheduler import ReduceLROnPlateau
 import os
 import pickle
 import sklearn.metrics
@@ -284,6 +285,7 @@ class Framework(object):
 			train_order = list(range(len(self.data_instance_triple)))
 		else:
 			train_order = list(range(len(self.data_train_word)))
+		scheduler = ReduceLROnPlateau(patience=3)
 		for epoch in range(FLAGS.max_epoch):
 			print('epoch ' + str(epoch) + ' starts...')
 			self.acc_NA.clear()
