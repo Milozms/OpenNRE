@@ -32,7 +32,7 @@ def init_word(size=300):
 	# reading word embedding data...
 	global word2id, word_size
 	print('reading word embedding data...')
-	f = open(data_path + 'glove.6B.300d.txt', "r")
+	f = open(data_path + 'glove.840B.300d.kbp.txt', "r")
 	# total, size = f.readline().strip().split()[:2]
 	# total = (int)(total)
 	word_size = (int)(size)

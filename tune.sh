@@ -1,5 +1,6 @@
-model="birnn_att"
-devices="1"
+#!/usr/bin/env bash
+model="pcnn_att_loss"
+devices="7"
 lr="0.5"
 mkdir ./checkpoint/$model/
 # for lr in 0.5 0.1 0.01 0.001 0.0001

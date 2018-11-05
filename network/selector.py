@@ -85,7 +85,7 @@ class Selector(object):
 				for i in range(scope.shape[0] - 1):
 					sen_matrix = x[scope[i]:scope[i + 1]]
 					attention_score = tf.nn.softmax(tf.reshape(attention_logit[scope[i]:scope[i + 1]], [1, -1]))
-					train_atten_scores.append(attention_score)
+					train_atten_scores.append(tf.reshape(attention_score, [-1]))
 				train_atten_scores = tf.reshape(tf.stack(train_atten_scores), [-1])
 				if not dropout_before:
 					x = self.__dropout__(x)

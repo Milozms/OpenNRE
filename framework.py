@@ -87,7 +87,7 @@ class Framework(object):
 		self.label = tf.placeholder(dtype=tf.int32, shape=[None], name='label')
 		self.label_for_select = tf.placeholder(dtype=tf.int32, shape=[None], name='label_for_select')
 		self.scope = tf.placeholder(dtype=tf.int32, shape=[FLAGS.batch_size + 1], name='scope')
-		self.weights = tf.placeholder(dtype=tf.float32, shape=[FLAGS.batch_size])
+		self.weights = tf.placeholder(dtype=tf.float32, shape=[None])
 
 		self.data_word_vec = np.load(os.path.join(FLAGS.export_path, 'vec.npy'))
 
@@ -301,9 +301,9 @@ class Framework(object):
 					label = []
 					for num in input_scope:
 						index = index + list(range(num[0], num[1] + 1))
-						label.append(self.data_train_label[num[0]])
+						label += [self.data_train_label[num[0]]] * (num[1] - num[0] + 1)
 						scope.append(scope[len(scope) - 1] + num[1] - num[0] + 1)
-						weights.append(self.reltot[self.data_train_label[num[0]]])  # label count
+						weights += [self.reltot[self.data_train_label[num[0]]]] * (num[1] - num[0] + 1)  # label count
 
 					loss = one_step(self, index, scope, weights, label, self.data_train_label[index], [self.loss])
 				else:
