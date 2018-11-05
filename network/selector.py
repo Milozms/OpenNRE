@@ -51,11 +51,9 @@ class Selector(object):
 					x = self.__dropout__(x)
 				attention_logit = self.__attention_train_logits__(x, query, "attention_logits", False)
 				tower_repre = []
-				train_atten_scores = []
 				for i in range(scope.shape[0] - 1):
 					sen_matrix = x[scope[i]:scope[i + 1]]
 					attention_score = tf.nn.softmax(tf.reshape(attention_logit[scope[i]:scope[i + 1]], [1, -1]))
-					train_atten_scores.append(attention_score)
 					final_repre = tf.squeeze(tf.matmul(attention_score, sen_matrix))
 					tower_repre.append(final_repre)
 				if not dropout_before:
@@ -63,6 +61,35 @@ class Selector(object):
 				else:
 					stack_repre = tf.stack(tower_repre)
 				return self.__logits__(stack_repre, "attention_logits", True), stack_repre
+			else:
+				test_attention_logit = self.__attention_test_logits__(x, "attention_logits", False)
+				test_tower_output = []
+				test_repre = []
+				for i in range(scope.shape[0] - 1):
+					test_attention_score = tf.nn.softmax(tf.transpose(test_attention_logit[scope[i]:scope[i+1],:]))
+					final_repre = tf.matmul(test_attention_score, x[scope[i]:scope[i+1]])
+					logits = self.__logits__(final_repre, "attention_logits", True)
+					test_repre.append(final_repre)
+					test_tower_output.append(tf.diag_part(tf.nn.softmax(logits)))
+				test_repre = tf.reshape(tf.stack(test_repre), [scope.shape[0] - 1, self.num_classes, -1])
+				test_output = tf.reshape(tf.stack(test_tower_output), [scope.shape[0] - 1, self.num_classes])
+				return test_output, test_repre
+
+	def weighted_loss(self, x, scope, query, dropout_before = False):
+		with tf.name_scope("attention"):
+			if self.is_training:
+				if dropout_before:
+					x = self.__dropout__(x)
+				attention_logit = self.__attention_train_logits__(x, query, "attention_logits", False)
+				train_atten_scores = []
+				for i in range(scope.shape[0] - 1):
+					sen_matrix = x[scope[i]:scope[i + 1]]
+					attention_score = tf.nn.softmax(tf.reshape(attention_logit[scope[i]:scope[i + 1]], [1, -1]))
+					train_atten_scores.append(attention_score)
+				train_atten_scores = tf.stack(train_atten_scores)
+				if not dropout_before:
+					x = self.__dropout__(x)
+				return self.__logits__(x, "attention_logits", True), x, train_atten_scores
 			else:
 				test_attention_logit = self.__attention_test_logits__(x, "attention_logits", False)
 				test_tower_output = []
