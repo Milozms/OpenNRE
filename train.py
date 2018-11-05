@@ -34,7 +34,7 @@ tf.app.flags.DEFINE_string('test_result_dir', './test_result', 'path to store th
 tf.app.flags.DEFINE_integer('save_epoch', 2, 'save the checkpoint after how many epoches')
 tf.app.flags.DEFINE_integer('random_seed', 1234, 'random seed used')
 
-tf.app.flags.DEFINE_string('model_name', 'pcnn_att', 'model\'s name')
+tf.app.flags.DEFINE_string('model_name', 'pcnn_att_loss', 'model\'s name')
 tf.app.flags.DEFINE_string('pretrain_model', 'None', 'pretrain model')
 FLAGS = tf.app.flags.FLAGS
 
@@ -47,6 +47,7 @@ def main(_):
     from model.pcnn_ave import pcnn_ave
     from model.pcnn_max import pcnn_max
     from model.pcnn import pcnn
+    from model.pcnn_att_loss import pcnn_att_loss
     from model.cnn_ave import cnn_ave
     from model.cnn_max import cnn_max
     from model.cnn import cnn

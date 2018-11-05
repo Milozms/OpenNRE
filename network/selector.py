@@ -86,7 +86,7 @@ class Selector(object):
 					sen_matrix = x[scope[i]:scope[i + 1]]
 					attention_score = tf.nn.softmax(tf.reshape(attention_logit[scope[i]:scope[i + 1]], [1, -1]))
 					train_atten_scores.append(attention_score)
-				train_atten_scores = tf.stack(train_atten_scores)
+				train_atten_scores = tf.reshape(tf.stack(train_atten_scores), [-1])
 				if not dropout_before:
 					x = self.__dropout__(x)
 				return self.__logits__(x, "attention_logits", True), x, train_atten_scores

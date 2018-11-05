@@ -303,7 +303,7 @@ class Framework(object):
 						index = index + list(range(num[0], num[1] + 1))
 						label.append(self.data_train_label[num[0]])
 						scope.append(scope[len(scope) - 1] + num[1] - num[0] + 1)
-						weights.append(self.reltot[self.data_train_label[num[0]]])
+						weights.append(self.reltot[self.data_train_label[num[0]]])  # label count
 
 					loss = one_step(self, index, scope, weights, label, self.data_train_label[index], [self.loss])
 				else:
