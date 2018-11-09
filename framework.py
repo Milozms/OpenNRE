@@ -205,7 +205,9 @@ class Framework(object):
 		tf.summary.scalar('learning_rate', FLAGS.learning_rate)
 		self.optimizer = optimizer(FLAGS.learning_rate)
 		self.grads_and_vars = self.optimizer.compute_gradients(loss)
-		self.train_op = self.optimizer.apply_gradients(self.grads_and_vars, global_step=self.global_step)
+		gradients, varibales = zip(*self.grads_and_vars)
+		capped_grads, _ = tf.clip_by_global_norm(gradients, 5)
+		self.train_op = self.optimizer.apply_gradients(zip(capped_grads, varibales), global_step=self.global_step)
 
 		# Summary
 		self.merged_summary = tf.summary.merge_all()
