@@ -296,7 +296,10 @@ class Framework(object):
 			np.random.shuffle(train_order)
 			for i in range(int(len(train_order) / float(FLAGS.batch_size))):
 				if self.use_bag:
-					input_scope = np.take(self.data_instance_scope, train_order[i * FLAGS.batch_size:(i + 1) * FLAGS.batch_size], axis=0)
+					if (i + 1) * FLAGS.batch_size < len(train_order):
+						input_scope = np.take(self.data_instance_scope, train_order[i * FLAGS.batch_size:(i + 1) * FLAGS.batch_size], axis=0)
+					else:
+						input_scope = np.take(self.data_instance_scope, train_order[i * FLAGS.batch_size:], axis=0)
 					index = []
 					scope = [0]
 					weights = []
