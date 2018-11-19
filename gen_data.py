@@ -33,6 +33,7 @@ def init_word(size=300):
 	global word2id, word_size
 	print('reading word embedding data...')
 	f = open(data_path + 'glove.6B.300d.txt', "r")
+	# f = open(data_path + 'glove.840B.300d.kbp.txt', "r")
 	# total, size = f.readline().strip().split()[:2]
 	# total = (int)(total)
 	word_size = (int)(size)
@@ -69,7 +70,6 @@ def sort_files(name):
 		content = f.readline()
 		if content == '':
 			break
-		s = s + 1
 		origin_data = content
 		content = content.strip().split()
 		en1_id = content[2]
@@ -78,7 +78,9 @@ def sort_files(name):
 		if rel_name in relation2id:
 			relation = relation2id[rel_name]
 		else:
-			relation = relation2id['None']
+			# relation = relation2id['None']
+			continue
+		s = s + 1
 		id = str(en1_id)+"#"+str(en2_id)+"#"+str(relation)
 		if not id in hash:
 			hash[id] = []
@@ -114,7 +116,8 @@ def init_train_files(name):
 		if rel_name in relation2id:
 			relation = relation2id[rel_name]
 		else:
-			relation = relation2id['None']
+			# relation = relation2id['None']
+			continue
 		en1pos = 0
 		en2pos = 0
 		for i in range(len(sentence)):
@@ -190,7 +193,8 @@ def init_test_files(name):
 		if rel_name in relation2id:
 			relation = relation2id[rel_name]
 		else:
-			relation = relation2id['None']
+			# relation = relation2id['None']
+			continue
 		en1pos = 0
 		en2pos = 0
 		for i in range(len(sentence)):
