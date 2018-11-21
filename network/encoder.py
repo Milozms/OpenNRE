@@ -19,7 +19,7 @@ class Encoder(object):
 
     def __mask__(self, mask):
         mask_embedding = tf.constant([[0,0,0], [1,0,0], [0,1,0], [0,0,1]], dtype=np.float32)
-        return tf.nn.embedding_lookup(mask_embedding, mask)
+        return tf.nn.embedding_lookup(mask_embedding, mask)  # [batch_size, max_len, 3]
 
     def __pooling__(self, x, max_length, hidden_size):
         x = tf.reshape(x, [-1, max_length, hidden_size])
@@ -49,7 +49,7 @@ class Encoder(object):
             x = activation(x)
             return self.__dropout__(x)
 
-    def pcnn(self, x, hidden_size, mask, kernel_size = 3, stride_size = 1, activation=tf.nn.relu):
+    def pcnn(self, x, hidden_size, mask, kernel_size = 3, stride_size = 1, activation=tf.nn.tanh):
         with tf.name_scope("pcnn"):
             max_length = x.get_shape()[1]
             x = self.__cnn_cell__(x, hidden_size, kernel_size, stride_size)
