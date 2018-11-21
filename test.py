@@ -32,7 +32,7 @@ tf.app.flags.DEFINE_string('model_name', 'birnn_att', 'model\'s name')
 tf.app.flags.DEFINE_string('epoch_range', '(5, 60)', 'checkpoint epoch range')
 
 tf.app.flags.DEFINE_float('drop_prob', 0.5, 'dropout rate')
-tf.app.flags.DEFINE_integer('random_seed', 1234, 'random seed used')
+tf.app.flags.DEFINE_integer('random_seed', 7698, 'random seed used')
 
 FLAGS = tf.app.flags.FLAGS
 
