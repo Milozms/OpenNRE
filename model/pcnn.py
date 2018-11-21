@@ -3,7 +3,7 @@ import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
 
-def pcnn(is_training):
+def pcnn(is_training, delete_checkpoint=False):
     if is_training:
         framework = Framework(is_training=True, use_bag=False)
     else:
@@ -24,5 +24,5 @@ def pcnn(is_training):
     else:
         framework.init_test_model(tf.nn.softmax(logit))
         framework.load_test_data()
-        framework.test(delete_checkpoint=True)
+        framework.test(delete_checkpoint=delete_checkpoint)
 
