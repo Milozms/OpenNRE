@@ -3,7 +3,7 @@ import tensorflow as tf
 
 FLAGS = tf.app.flags.FLAGS
 
-def birnn(is_training, delete_checkpoint=False):
+def birnn(is_training, is_dev=False):
     if is_training:
         framework = Framework(is_training=True, use_bag=False)
     else:
@@ -23,6 +23,10 @@ def birnn(is_training, delete_checkpoint=False):
         framework.train()
     else:
         framework.init_test_model(tf.nn.softmax(logit))
-        framework.load_test_data()
-        framework.test(delete_checkpoint=delete_checkpoint)
+        if is_dev:
+            framework.load_dev_data()
+            framework.test(delete_checkpoint=True)
+        else:
+            framework.load_test_data()
+            framework.test(delete_checkpoint=False)
 
