@@ -329,7 +329,7 @@ class Framework(object):
 				path = self.saver.save(self.sess, os.path.join(FLAGS.checkpoint_dir, FLAGS.model_name), global_step=epoch)
 				print('have saved model to ' + path)
 
-	def test(self, one_step=test_one_step):
+	def test(self, one_step=test_one_step, delete_checkpoint=False):
 	# this test is actually used as tuning
 	# the real test is 'test_some_epoch'
 		epoch_range = eval(FLAGS.epoch_range)
@@ -363,6 +363,13 @@ class Framework(object):
 			print('P/R/F1: %.6f\t%.6f\t%.6f' % (p_epoch, r_epoch, f1))
 		self.save_epoch(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_epoch)
 		# self.save_auc(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_auc)
+		if delete_checkpoint:
+			for epoch in epoch_range:
+				if epoch != best_epoch and os.path.exists(os.path.join(FLAGS.checkpoint_dir, FLAGS.model_name + '-' + str(epoch) + '.index')):
+					os.remove(os.path.join(FLAGS.checkpoint_dir, FLAGS.model_name + '-' + str(epoch) + '.index'))
+					os.remove(os.path.join(FLAGS.checkpoint_dir, FLAGS.model_name + '-' + str(epoch) + '.data-00000-of-00001'))
+					os.remove(os.path.join(FLAGS.checkpoint_dir, FLAGS.model_name + '-' + str(epoch) + '.meta'))
+
 		print('best epoch:', best_epoch)
 		print('best f1 epoch:', best_f1_epoch)
 		print('P, R, F1: %.6f\t%.6f\t%.6f' % (precision, recall, best_f1))

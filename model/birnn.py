@@ -24,5 +24,5 @@ def birnn(is_training):
     else:
         framework.init_test_model(tf.nn.softmax(logit))
         framework.load_test_data()
-        framework.test()
+        framework.test(delete_checkpoint=True)
 
