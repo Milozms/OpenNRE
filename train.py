@@ -31,7 +31,7 @@ tf.app.flags.DEFINE_float('drop_prob',0.5,'dropout rate')
 tf.app.flags.DEFINE_string('checkpoint_dir', './checkpoint/', 'path to store checkpoint')
 tf.app.flags.DEFINE_string('summary_dir', './summary', 'path to store summary_dir')
 tf.app.flags.DEFINE_string('test_result_dir', './test_result', 'path to store the test results')
-tf.app.flags.DEFINE_integer('save_epoch', 2, 'save the checkpoint after how many epoches')
+tf.app.flags.DEFINE_integer('save_epoch', 1, 'save the checkpoint after how many epoches')
 tf.app.flags.DEFINE_integer('random_seed', 7698, 'random seed used')
 
 tf.app.flags.DEFINE_string('model_name', 'pcnn_att', 'model\'s name')
