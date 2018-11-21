@@ -22,7 +22,7 @@ tf.app.flags.DEFINE_integer('hidden_size',230,'hidden feature size')
 tf.app.flags.DEFINE_integer('pos_size',5,'position embedding size')
 tf.app.flags.DEFINE_integer('word_size', 300, 'word embedding size')
 
-tf.app.flags.DEFINE_integer('max_epoch',60,'maximum of training epochs')
+tf.app.flags.DEFINE_integer('max_epoch',100,'maximum of training epochs')
 tf.app.flags.DEFINE_integer('batch_size',64,'entity numbers used each training time')
 tf.app.flags.DEFINE_float('learning_rate',0.5,'entity numbers used each training time')
 tf.app.flags.DEFINE_float('weight_decay',0.00001,'weight_decay')
