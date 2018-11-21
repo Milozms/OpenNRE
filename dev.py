@@ -75,7 +75,7 @@ def main(_):
     if not FLAGS.model_name in locals():
         exit()
     model = locals()[FLAGS.model_name]
-    model(is_training=False, delete_checkpoint=True)
+    model(is_training=False, is_dev=True)
 
 if __name__ == "__main__":
     tf.app.run()
