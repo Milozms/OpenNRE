@@ -13,7 +13,7 @@ tf.app.flags.DEFINE_string('export_path','./data/KBP/','path to data')
 # config_file = open(os.path.join('data', "config"), 'r')
 # config = json.loads(config_file.read())
 # config_file.close()
-fixlen = 120
+fixlen = 300
 tf.app.flags.DEFINE_integer('max_length', fixlen, 'maximum of number of words in one sentence')
 tf.app.flags.DEFINE_integer('pos_num', fixlen * 2 + 1, 'number of position embedding vectors')
 tf.app.flags.DEFINE_integer('num_classes', 7,'maximum of relations')

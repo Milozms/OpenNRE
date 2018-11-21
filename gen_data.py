@@ -10,9 +10,9 @@ export_path = "./data/KBP/"
 if not os.path.exists('./data/KBP'):
 	os.mkdir('./data/KBP')
 #length of sentence
-fixlen = 120
+fixlen = 300
 #max length of position embedding is 100 (-100~+100)
-maxlen = 100
+maxlen = 300
 
 word2id = {}
 relation2id = {}
