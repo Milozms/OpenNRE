@@ -88,7 +88,7 @@ class Encoder(object):
             if isinstance(fw_states, tuple):
                 fw_states = fw_states[0]
                 bw_states = bw_states[0]
-            return tf.concat([fw_states, bw_states], axis = 1)
+            return self.__dropout__(tf.concat([fw_states, bw_states], axis = 1))
 
     def __normalize__(self,
                       inputs, 
