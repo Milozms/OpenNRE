@@ -21,7 +21,7 @@ class Selector(object):
     def __logits__(self, x, var_scope = None, reuse = tf.AUTO_REUSE):
         with tf.variable_scope(var_scope or 'logits', reuse = reuse):
             relation_matrix = tf.get_variable('relation_matrix', [self.num_classes, x.shape[1]], dtype=tf.float32, initializer=tf.contrib.layers.xavier_initializer())
-            bias = tf.get_variable('bias', [self.num_classes], dtype=tf.float32, initializer=tf.contrib.layers.xavier_initializer())
+            bias = tf.get_variable('bias', [self.num_classes], dtype=tf.float32, initializer=tf.keras.initializers.Zeros())
             logits = tf.matmul(x, tf.transpose(relation_matrix)) + bias
         return logits
 
