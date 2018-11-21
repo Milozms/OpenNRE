@@ -361,7 +361,7 @@ class Framework(object):
 				precision, recall, best_f1 = p_epoch, r_epoch, f1
 				best_f1_epoch = epoch
 			print('P/R/F1: %.6f\t%.6f\t%.6f' % (p_epoch, r_epoch, f1))
-		self.save_epoch(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_epoch)
+		self.save_epoch(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_f1_epoch)
 		# self.save_auc(FLAGS.model_name, FLAGS.drop_prob, FLAGS.learning_rate, FLAGS.batch_size, best_auc)
 		if delete_checkpoint:
 			for epoch in epoch_range:
